@@ -1,0 +1,10 @@
+## Interface: 20502
+## Title: BestInSlot
+## Notes: This project modified from ExoLink and ExoLink_BIS(@俏俏制作)
+## OptionalDeps: LibExtraTip
+## Version: BBC Classic
+
+libs\LibExtraTip\Load.xml
+
+BestInSlot.lua
+Data\BIS.xml
