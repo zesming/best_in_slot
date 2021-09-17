@@ -2,6 +2,8 @@
 
 A WOW (Classic BBC) addon shows the BIS info on the gear tooltip
 
+![screenshot1](ReadmeAssets/screenshot_1.png)
+
 This project modified from `ExoLink` and `ExoLink_BIS (@俏俏制作)`
 
 If you want to customize BIS info, please go to the `Data/{class_you_want_to_edit}.lua`, and modify the Item regists info.
