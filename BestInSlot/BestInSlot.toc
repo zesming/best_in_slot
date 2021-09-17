@@ -1,5 +1,6 @@
 ## Interface: 20502
 ## Title: BestInSlot
+## Author: zesming
 ## Notes: This project modified from ExoLink and ExoLink_BIS(@俏俏制作)
 ## OptionalDeps: LibExtraTip
 ## Version: BBC Classic
