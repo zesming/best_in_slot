@@ -1,11 +1,12 @@
 # Best In Slot
 
-A WOW addon shows the BIS info on the gear tooltip
+A WOW (Classic BBC) addon shows the BIS info on the gear tooltip
 
 This project modified from `ExoLink` and `ExoLink_BIS (@俏俏制作)`
 
-If you want to custom BIS info, please edit the `Data/{class}.lua`, and modify the Item regists info.
+If you want to customize BIS info, please go to the `Data/{class_you_want_to_edit}.lua`, and modify the Item regists info.
 
+Example
 ```lua
 local bis = BIS:RegisterClass("Druid", "熊德")  -- Class Info
 
