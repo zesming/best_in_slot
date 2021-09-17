@@ -1,7 +1,7 @@
 local LibExtraTip = LibStub("LibExtraTip-1") -- Init LibExtraTip lib
 
 local addonName, addonTable = ...
-local iconpath = "Interface\\GLUES\\CHARACTERCREATE\\UI-CharacterCreate-Classes" -- Classes icon path
+local iconPath = "Interface\\GLUES\\CHARACTERCREATE\\UI-CharacterCreate-Classes" -- Classes icon path
 local iconCutoff = 6
 
 BIS.Class = {}  -- Class Info
@@ -20,13 +20,13 @@ local function buildExtraTip(tooltip, entry)
 	LibExtraTip:AddLine(tooltip,"# BIS:",r,g,b,true)
 
 	for k, v in pairs(entry) do
-		local entry = BIS.Class[k]
-		local class = entry.class:upper()
+		local classInfo = BIS.Class[k]
+		local class = classInfo.class:upper()
 		local color = RAID_CLASS_COLORS[class]
 		local coords = CLASS_ICON_TCOORDS[class]
-		local classfontstring = "|T" .. iconpath .. ":14:14:::256:256:" .. iconOffset(coords[1] * 4, coords[3] * 4) .. "|t"
+		local classFontString = "|T" .. iconPath .. ":14:14:::256:256:" .. iconOffset(coords[1] * 4, coords[3] * 4) .. "|t"
 		
-		LibExtraTip:AddDoubleLine(tooltip, classfontstring .. " " .. entry.class .. " " .. entry.spec .. " " .. entry.comment, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
+		LibExtraTip:AddDoubleLine(tooltip, classFontString .. " " .. entry.class .. " " .. entry.spec .. " " .. entry.comment, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
 	end
 	
 	LibExtraTip:AddLine(tooltip," ",r,g,b,true)
@@ -45,12 +45,12 @@ local function onTooltipSetItem(tooltip, itemLink, quantity)
 end
 
 -- Init a frame to contains the BIS info
-local eventframe = CreateFrame("FRAME",addonName.."Events")
+local eventFrame = CreateFrame("FRAME",addonName.."Events")
 
 -- The event handler
 local function onEvent(self,event,arg)
     if event == "PLAYER_ENTERING_WORLD" then
-        eventframe:UnregisterEvent("PLAYER_ENTERING_WORLD")
+        eventFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
         -- Use LibExtraTip to generate BIS Info
         -- Add a BIS Info tool tip generator
@@ -61,11 +61,11 @@ local function onEvent(self,event,arg)
     end
 end
 
-eventframe:RegisterEvent("PLAYER_ENTERING_WORLD")  -- Regist a handler point when player entering the world
-eventframe:SetScript("OnEvent", onEvent)  -- The handler when recieved registed event.
+eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")  -- Register a handler point when player entering the world
+eventFrame:SetScript("OnEvent", onEvent)  -- The handler when received registered event.
 
 --[[
-    Regist the Class info from Data/{Class}.lua
+    Register the Class info from Data/{Class}.lua
     @class The class name string, e.g "Druid"
     @spec The class readable string, e.g "熊德" / "Druid Tank"
 ]]--
