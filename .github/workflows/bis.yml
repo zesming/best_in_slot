@@ -4,15 +4,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - uses: actions/checkout@master
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: release_${GITHUB_REF##*/}.zip
+          filename: release_${{ steps.extract_branch.outputs.branch }}.zip
           path: BestInSlot
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: release_${GITHUB_REF##*/}.zip
+          artifacts: release_${{ steps.extract_branch.outputs.branch }}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
