@@ -9,9 +9,10 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: release_${{ github.ref }}.zip
+          filename: release_${GITHUB_REF##*/}.zip
+          path: BestInSlot
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: release_${{ github.ref }}.zip
+          artifacts: release_${GITHUB_REF##*/}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
