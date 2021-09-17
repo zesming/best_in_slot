@@ -1,11 +1,13 @@
+BIS = {}
+BIS.Class = {}  -- Class Info
+BIS.Items = {}  -- BIS item infos
+
 local LibExtraTip = LibStub("LibExtraTip-1") -- Init LibExtraTip lib
 
 local addonName, addonTable = ...
 local iconPath = "Interface\\GLUES\\CHARACTERCREATE\\UI-CharacterCreate-Classes" -- Classes icon path
 local iconCutoff = 6
-
-BIS.Class = {}  -- Class Info
-BIS.Items = {}  -- BIS item infos
+local r,g,b = .9,.8,.5
 
 -- Generate the icon offset string
 local function iconOffset(col, row)
@@ -15,7 +17,6 @@ end
 
 -- Generate BIS Tip Lines
 local function buildExtraTip(tooltip, entry)
-    local r,g,b = .9,.8,.5
     LibExtraTip:AddLine(tooltip," ",r,g,b,true)
 	LibExtraTip:AddLine(tooltip,"# BIS:",r,g,b,true)
 
@@ -26,10 +27,8 @@ local function buildExtraTip(tooltip, entry)
 		local coords = CLASS_ICON_TCOORDS[class]
 		local classFontString = "|T" .. iconPath .. ":14:14:::256:256:" .. iconOffset(coords[1] * 4, coords[3] * 4) .. "|t"
 		
-		LibExtraTip:AddDoubleLine(tooltip, classFontString .. " " .. entry.class .. " " .. entry.spec .. " " .. entry.comment, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
+		LibExtraTip:AddDoubleLine(tooltip, classFontString .. " " .. classInfo.class .. " " .. classInfo.spec, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
 	end
-	
-	LibExtraTip:AddLine(tooltip," ",r,g,b,true)
 end
 
 -- The callback func when the item tooltip displayed
@@ -38,6 +37,8 @@ local function onTooltipSetItem(tooltip, itemLink, quantity)
     
 	local itemString = string.match(itemLink, "item[%-?%d:]+")
 	local itemId = ({ string.split(":", itemString) })[2]
+	LibExtraTip:AddLine(tooltip," ",r,g,b,true)
+	LibExtraTip:AddLine(tooltip,"# Item ID: " .. itemId, r,g,b,true)
 
 	if BIS.Items[itemId] then
 		buildExtraTip(tooltip, BIS.Items[itemId])
@@ -80,6 +81,7 @@ function BIS:RegisterClass(class, spec)
 	bis.ID = class..spec
 
     BIS.Class[bis.ID] = bis
+
     return bis
 end
 

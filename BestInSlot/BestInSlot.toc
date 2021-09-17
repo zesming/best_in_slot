@@ -5,6 +5,7 @@
 ## OptionalDeps: LibExtraTip
 ## Version: BBC Classic
 
+libs\LibStub.lua
 libs\LibExtraTip\Load.xml
 
 BestInSlot.lua
