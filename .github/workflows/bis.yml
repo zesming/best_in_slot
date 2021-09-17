@@ -10,7 +10,6 @@ jobs:
         with:
           type: 'zip'
           filename: release_${{ github.ref }}.zip
-          path: BestInSlot
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
