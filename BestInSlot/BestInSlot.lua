@@ -25,9 +25,9 @@ local function buildExtraTip(tooltip, entry)
 		local class = classInfo.class:upper()
 		local color = RAID_CLASS_COLORS[class]
 		local coords = CLASS_ICON_TCOORDS[class]
-		local classFontString = "|T" .. iconPath .. ":14:14:::256:256:" .. iconOffset(coords[1] * 4, coords[3] * 4) .. "|t"
+		local classIconString = "|T" .. iconPath .. ":14:14:::256:256:" .. iconOffset(coords[1] * 4, coords[3] * 4) .. "|t"
 		
-		LibExtraTip:AddDoubleLine(tooltip, classFontString .. " " .. classInfo.class .. " " .. classInfo.spec, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
+		LibExtraTip:AddDoubleLine(tooltip, classIconString .. " " .. classInfo.class .. " " .. classInfo.spec, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
 	end
 end
 
