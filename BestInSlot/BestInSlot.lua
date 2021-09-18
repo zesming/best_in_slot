@@ -32,17 +32,19 @@ local function buildExtraTip(tooltip, entry)
 end
 
 -- The callback func when the item tooltip displayed
-local function onTooltipSetItem(tooltip, itemLink, quantity)
+local function onTooltipSetItem(tooltip, itemLink)
     if not itemLink then return end
     
 	local itemString = string.match(itemLink, "item[%-?%d:]+")
-	local itemId = ({ string.split(":", itemString) })[2]
-	LibExtraTip:AddLine(tooltip," ",r,g,b,true)
-	LibExtraTip:AddLine(tooltip,"# Item ID: " .. itemId, r,g,b,true)
+	local itemID = ({ string.split(":", itemString) })[2]
 
-	if BIS.Items[itemId] then
-		buildExtraTip(tooltip, BIS.Items[itemId])
+	if BIS.Items[itemID] then
+		buildExtraTip(tooltip, BIS.Items[itemID])
 	end
+
+	-- Add Item ID to the last line
+	LibExtraTip:AddLine(tooltip," ",r,g,b,true)
+	LibExtraTip:AddLine(tooltip,"# Item ID: " .. itemID, r,g,b,true)
 end
 
 -- Init a frame to contains the BIS info
