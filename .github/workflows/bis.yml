@@ -17,10 +17,10 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: release_${{ steps.extract_branch.outputs.branch }}.zip
+          filename: BestInSlot_${{ steps.extract_branch.outputs.branch }}.zip
           path: BestInSlot
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: release_${{ steps.extract_branch.outputs.branch }}.zip
+          artifacts: BestInSlot_${{ steps.extract_branch.outputs.branch }}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
