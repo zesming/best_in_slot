@@ -1,10 +1,9 @@
 ## Interface: 20502
 ## Title: BestInSlot
-## Author: zesming | 俏俏制作
+## Author: zesming | 俏俏制作(Tooltip)
 ## Notes: A WOW (Classic BBC) addon shows the BIS info on the gear tooltip.
 ## OptionalDeps: LibExtraTip
 ## Version: BBC Classic v1
-# This project modified from ExoLink and ExoLink_BIS(@俏俏制作)
 
 libs\LibStub.lua
 libs\LibExtraTip\Load.xml
