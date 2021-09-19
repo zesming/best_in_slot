@@ -5,11 +5,11 @@ A WOW (Classic BBC) addon shows the BIS info on the gear tooltip, and check the 
 ### Features
 #### ToolTip Information
 
-![Tooltip](ReadmeAssets/screenshot_1.png)
+![Tooltip](ReadmeAssets/screenshot_1.jpg)
 
 #### Gear List Browser
 
-![Browser](ReadmeAssets/screenshot_2.png)
+![Browser](ReadmeAssets/screenshot_2.jpg)
 
 Type `/bb` or `/ybm` in the chat window to open the browser.
 
