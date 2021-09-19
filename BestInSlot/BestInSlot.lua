@@ -15,19 +15,32 @@ local function iconOffset(col, row)
 	return offsetString .. ":" .. (row * 64 + iconCutoff) .. ":" .. ((row + 1) * 64 - iconCutoff)
 end
 
+local function generatePhase(phases)
+	if #phases then
+		if #phases == 1 then
+			return "P"..tostring(phases[1])
+		else
+			table.sort(phases)
+			return "P"..tostring(phases[1]).."-".."P"..tostring(phases[#phases])
+		end
+	else
+		return ""
+	end
+end
+
 -- Generate BIS Tip Lines
 local function buildExtraTip(tooltip, entry)
     LibExtraTip:AddLine(tooltip," ",r,g,b,true)
 	LibExtraTip:AddLine(tooltip,"# BIS:",r,g,b,true)
 
-	for k, v in pairs(entry) do
+	for k, phases in pairs(entry) do
 		local classInfo = BIS.Class[k]
 		local class = classInfo.class:upper()
 		local color = RAID_CLASS_COLORS[class]
 		local coords = CLASS_ICON_TCOORDS[class]
 		local classIconString = "|T" .. iconPath .. ":14:14:::256:256:" .. iconOffset(coords[1] * 4, coords[3] * 4) .. "|t"
 		
-		LibExtraTip:AddDoubleLine(tooltip, classIconString .. " " .. classInfo.class .. " " .. classInfo.spec, v, color.r, color.g, color.b, color.r, color.g, color.b, true)
+		LibExtraTip:AddDoubleLine(tooltip, classIconString .. " " .. classInfo.class .. " " .. classInfo.spec, generatePhase(phases), color.r, color.g, color.b, color.r, color.g, color.b, true)
 	end
 end
 
@@ -100,5 +113,10 @@ function BIS:BISItem(bisEntry, ID, slot, description, phase)
 		BIS.Items[ID] = {}
 	end
 
-	BIS.Items[ID][bisEntry.ID] = phase
+	if not BIS.Items[ID][bisEntry.ID] then
+		BIS.Items[ID][bisEntry.ID] = {}
+	end
+	table.insert(BIS.Items[ID][bisEntry.ID], phase)
+
+	bb:RegisterItem(bisEntry, ID, slot, description, phase)
 end

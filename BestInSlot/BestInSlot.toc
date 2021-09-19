@@ -9,5 +9,6 @@
 libs\LibStub.lua
 libs\LibExtraTip\Load.xml
 
+BISBrowser.lua
 BestInSlot.lua
 Data\BIS.xml
