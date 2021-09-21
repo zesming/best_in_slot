@@ -10,22 +10,27 @@ local iconPath = "Interface\\GLUES\\CHARACTERCREATE\\UI-CharacterCreate-Classes"
 
 bb = CreateFrame("Frame",modName,UIParent,BackdropTemplateMixin and "BackdropTemplate");	-- 9.0.1: Using BackdropTemplate
 bb.items = {}
-bb.gearItems = {}
 bb.classItems = {}
 bb.showedClassTitle = {}
 bb.selectedClass = {}
+local gearItems = {}
+local listIndex = 1
 
 --------------------------------------------------------------------------------------------------------
 --                                           Helper                                                   --
 --------------------------------------------------------------------------------------------------------
 
 local function resetContainer()
-    if #bb.gearItems ~= 0 then
-        for i = 1, #bb.gearItems do
-            bb.gearItems[i]:Hide()
+    if #gearItems ~= 0 then
+        for i = 1, #gearItems do
+            local f = gearItems[i]
+            if f then
+                f:Hide()
+            end
         end
-        bb.gearItems = {}
     end
+    wipe(gearItems)
+    listIndex = 1
 end
 
 local function iconOffset(col, row)
@@ -37,31 +42,21 @@ end
 --                                           Build UI                                                 --
 --------------------------------------------------------------------------------------------------------
 
-local function gearItem(itemID, index)
-    local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(itemID)
-    local gearText = itemLink
-    if itemEquipLoc and itemRarity then
-        local _, _, _, hex = GetItemQualityColor(itemRarity)
-        local localizedLoc = _G[itemEquipLoc]
-        if not localizedLoc then
-            localizedLoc = itemSubType
-        end
-        gearText = '|c'.. hex .. '[' .. 'Lv.' .. itemLevel .. '|' .. localizedLoc .. '|' .. itemName .. ']'
-    end
-
+local function gearItem(itemInfo, index)
+    listIndex = listIndex + 1
     -- Item
     local item = CreateFrame("Frame", nil, bb.container, BackdropTemplateMixin and "BackdropTemplate")
     item:SetBackdrop({ bgFile = "", edgeFile = "", edgeSize = 0, insets = { left = 3, right = 3, top = 3, bottom = 3 } });
     item:SetBackdropColor(0,0,0,0)
 
     local gearItemIcon = item:CreateTexture()
-    gearItemIcon:SetTexture(itemTexture)
     gearItemIcon:SetPoint("TOPLEFT")
+    gearItemIcon:SetTexture(itemInfo.itemTexture)
 
     local gearItemString = item:CreateFontString(nil,"ARTWORK","GameFontHighlight");
     gearItemString:SetPoint("TOPLEFT", gearItemIcon, "TOPRIGHT", 2, 0)
     gearItemString:SetFont(gearItemString:GetFont(),16,"THICKOUTLINE");
-    gearItemString:SetText(gearText)
+    gearItemString:SetText(itemInfo.gearText)
 
     item:SetSize(gearItemString:GetWidth(), gearItemString:GetHeight())
     gearItemIcon:SetSize(gearItemString:GetHeight(), gearItemString:GetHeight())
@@ -70,13 +65,13 @@ local function gearItem(itemID, index)
     if (index == 1) then
         item:SetPoint("TOPLEFT", bb.showedClassTitle[1], "BOTTOMLEFT",12, -8)
     else
-        item:SetPoint("TOPLEFT",bb.gearItems[#bb.gearItems], "BOTTOMLEFT", 0, -4)
+        item:SetPoint("TOPLEFT",gearItems[#gearItems], "BOTTOMLEFT", 0, -4)
     end
 
     item:SetScript("OnEnter", function()
         if (itemLink) then
             GameTooltip:SetOwner(gearItemString, "ANCHOR_TOP")
-            GameTooltip:SetHyperlink(itemLink)
+            GameTooltip:SetHyperlink(itemInfo.itemLink)
             GameTooltip:Show()
         end
     end)
@@ -85,14 +80,41 @@ local function gearItem(itemID, index)
         GameTooltip:Hide()
     end)
 
-    bb.gearItems[index] = item
+    gearItems[index] = item
+end
+
+local function prepareItemInfo(itemID)
+    local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(itemID)
+    if not itemName or not itemLink or not itemRarity or not itemLevel or not itemSubType or not itemEquipLoc then
+        return nil
+    else
+        local gearText = itemLink
+        if itemEquipLoc and itemRarity then
+            local _, _, _, hex = GetItemQualityColor(itemRarity)
+            local localizedLoc = _G[itemEquipLoc]
+            if not localizedLoc then
+                localizedLoc = itemSubType
+            end
+            gearText = '|c'.. hex .. '[' .. 'Lv.' .. itemLevel .. '|' .. localizedLoc .. '|' .. itemName .. ']'
+        end
+
+        return {
+            gearText = gearText,
+            itemTexture = itemTexture,
+            itemLink = itemLink
+        }
+    end
 end
 
 local function gearList(items)
     resetContainer()
     if items then
         for i = 1, #items do
-            gearItem(items[i].ID, i)
+            local ID = items[i].ID
+            local info = prepareItemInfo(ID)
+            if info then
+                gearItem(info, listIndex)
+            end
         end
     end
 end
@@ -251,6 +273,14 @@ bb.container:SetBackdrop({ bgFile = "Interface\\Tooltips\\UI-Tooltip-Background"
 bb.container:SetPoint("TOPLEFT", 12, -38);
 bb.container:SetPoint("BOTTOMRIGHT", -324, 42);
 bb.container:SetBackdropColor(0.1,0.1,0.2,1);
+bb.container:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+bb.container:SetScript("OnEvent", function(self, event, ...)
+    if event == "GET_ITEM_INFO_RECEIVED" then
+        local itemID = ...
+        local info = prepareItemInfo(itemID)
+        gearItem(info, listIndex)
+    end
+end)
 
 -- Class List
 bb.leftContainer = CreateFrame("Frame", nil, bb, BackdropTemplateMixin and "BackdropTemplate")

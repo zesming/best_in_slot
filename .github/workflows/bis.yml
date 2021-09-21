@@ -13,6 +13,14 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/tags/})"
         id: extract_branch
       - uses: actions/checkout@master
+      - name: Set python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Update TOC file version
+        env:
+          ADDON_VERSION: ${{ steps.extract_branch.outputs.branch }}
+        run: python update_version.py
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
