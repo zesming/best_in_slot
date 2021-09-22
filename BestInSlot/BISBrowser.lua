@@ -8,7 +8,9 @@ local modName = ...;
 local iconCutoff = 6
 local iconPath = "Interface\\GLUES\\CHARACTERCREATE\\UI-CharacterCreate-Classes" -- Classes icon path
 
-bb = CreateFrame("Frame",modName,UIParent,BackdropTemplateMixin and "BackdropTemplate");	-- 9.0.1: Using BackdropTemplate
+bb = CreateFrame("Frame",modName,UIParent,BackdropTemplateMixin and "BackdropTemplate");
+tinsert(UISpecialFrames, modName); -- Make frame closeable with ESC
+
 bb.items = {}
 bb.classItems = {}
 bb.showedClassTitle = {}
@@ -69,7 +71,7 @@ local function gearItem(itemInfo, index)
     end
 
     item:SetScript("OnEnter", function()
-        if (itemLink) then
+        if (itemInfo.itemLink) then
             GameTooltip:SetOwner(gearItemString, "ANCHOR_TOP")
             GameTooltip:SetHyperlink(itemInfo.itemLink)
             GameTooltip:Show()
@@ -189,7 +191,7 @@ local function classItem(class, spec, index)
 
     local classString = item:CreateFontString(nil,"ARTWORK","GameFontHighlight");
     classString:SetPoint("TOPLEFT", 2, 0)
-    classString:SetFont(classString:GetFont(),16,"THICKOUTLINE");
+    classString:SetFont(classString:GetFont(), 15,"THICKOUTLINE");
     classString:SetText(classIconString .. " " .. class .. " " .. spec)
     classString:SetTextColor(color.r, color.g, color.b)
 
@@ -289,11 +291,17 @@ bb.leftContainer:SetPoint("TOPLEFT", bb.container, "TOPRIGHT", 12, 0);
 bb.leftContainer:SetPoint("BOTTOMRIGHT", -12, 42);
 bb.leftContainer:SetBackdropColor(0.1,0.1,0.2,1);
 
-bb.footer = bb:CreateFontString(nil,"ARTWORK","GameFontHighlight");
-bb.footer:SetPoint("BOTTOMRIGHT",-12,12);
-bb.footer:SetFont(bb.footer:GetFont(),10,"THICKOUTLINE");
-bb.footer:SetText('Powered by zesming, a.k.a 明子 @辛洛斯 - 娱乐夜不眠')
-bb.footer:SetTextColor(1, 1, 1, 0.5)
+bb.quote = bb:CreateFontString(nil,"ARTWORK","GameFontHighlight");
+bb.quote:SetPoint("BOTTOMLEFT", 12, 12);
+bb.quote:SetFont(bb.quote:GetFont(),10,"THICKOUTLINE");
+bb.quote:SetText('BIS data from @蓝色隐士 / @俏俏')
+bb.quote:SetTextColor(1, 1, 1, 0.5)
+
+bb.author = bb:CreateFontString(nil,"ARTWORK","GameFontHighlight");
+bb.author:SetPoint("BOTTOMRIGHT",-12, 12);
+bb.author:SetFont(bb.author:GetFont(),10,"THICKOUTLINE");
+bb.author:SetText('Powered by zesming, a.k.a 明子 @辛洛斯 - 娱乐夜不眠')
+bb.author:SetTextColor(1, 1, 1, 0.5)
 
 _G["SLASH_".."BB".."1"] = "/bb";
 _G["SLASH_".."BB".."2"] = "/ybm";
