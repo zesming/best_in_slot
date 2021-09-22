@@ -88,7 +88,7 @@ local function gearItem(itemInfo, index)
 end
 
 local function prepareItemInfo(itemID)
-    if not needIndexItems[itemID] then
+    if not needIndexItems[tostring(itemID)] then
         return nil
     end
     local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(itemID)
@@ -118,7 +118,7 @@ local function gearList(items)
     if items then
         for i = 1, #items do
             local ID = items[i].ID
-            needIndexItems[ID] = {}
+            needIndexItems[tostring(ID)] = {}
             local info = prepareItemInfo(ID)
             if info then
                 gearItem(info, listIndex)
@@ -259,6 +259,17 @@ bb:Hide();
 bb:SetScript("OnShow",OnShow);
 bb:SetScript("OnHide",OnHide);
 
+bb:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+bb:SetScript("OnEvent", function(self, event, ...)
+    if event == "GET_ITEM_INFO_RECEIVED" then
+        local itemID = ...
+        local info = prepareItemInfo(itemID)
+        if info then
+            gearItem(info, listIndex)
+        end
+    end
+end)
+
 bb.outline = CreateFrame("Frame",nil,bb,BackdropTemplateMixin and "BackdropTemplate");	-- 9.0.1: Using BackdropTemplate
 bb.outline:SetBackdrop({ bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 4, right = 4, top = 4, bottom = 4 } });
 bb.outline:SetBackdropColor(0.1,0.1,0.2,1);
@@ -281,16 +292,6 @@ bb.container:SetBackdrop({ bgFile = "Interface\\Tooltips\\UI-Tooltip-Background"
 bb.container:SetPoint("TOPLEFT", 12, -38);
 bb.container:SetPoint("BOTTOMRIGHT", -324, 42);
 bb.container:SetBackdropColor(0.1,0.1,0.2,1);
-bb.container:RegisterEvent("GET_ITEM_INFO_RECEIVED")
-bb.container:SetScript("OnEvent", function(self, event, ...)
-    if event == "GET_ITEM_INFO_RECEIVED" then
-        local itemID = ...
-        local info = prepareItemInfo(itemID)
-        if info then
-            gearItem(info, listIndex)
-        end
-    end
-end)
 
 -- Class List
 bb.leftContainer = CreateFrame("Frame", nil, bb, BackdropTemplateMixin and "BackdropTemplate")
