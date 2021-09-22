@@ -15,6 +15,7 @@ bb.items = {}
 bb.classItems = {}
 bb.showedClassTitle = {}
 bb.selectedClass = {}
+local needIndexItems = {}
 local gearItems = {}
 local listIndex = 1
 
@@ -32,6 +33,7 @@ local function resetContainer()
         end
     end
     wipe(gearItems)
+    wipe(needIndexItems)
     listIndex = 1
 end
 
@@ -86,6 +88,9 @@ local function gearItem(itemInfo, index)
 end
 
 local function prepareItemInfo(itemID)
+    if not needIndexItems[itemID] then
+        return nil
+    end
     local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(itemID)
     if not itemName or not itemLink or not itemRarity or not itemLevel or not itemSubType or not itemEquipLoc then
         return nil
@@ -113,6 +118,7 @@ local function gearList(items)
     if items then
         for i = 1, #items do
             local ID = items[i].ID
+            needIndexItems[ID] = {}
             local info = prepareItemInfo(ID)
             if info then
                 gearItem(info, listIndex)
@@ -280,7 +286,9 @@ bb.container:SetScript("OnEvent", function(self, event, ...)
     if event == "GET_ITEM_INFO_RECEIVED" then
         local itemID = ...
         local info = prepareItemInfo(itemID)
-        gearItem(info, listIndex)
+        if info then
+            gearItem(info, listIndex)
+        end
     end
 end)
 
