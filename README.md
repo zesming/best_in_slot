@@ -15,7 +15,7 @@ Type `/bb` or `/ybm` in the chat window to open the browser.
 
 ### Data Source
 
-The BIS data is migrated from [ExoLink_BIS](https://bbs.nga.cn/read.php?tid=27318411&rand=250) @俏俏作品, and now it changes to use the @蓝色隐士 bis data (P0 - P2).
+The BIS data was migrated from [ExoLink_BIS](https://bbs.nga.cn/read.php?tid=27318411&rand=250) @俏俏作品, and now it changes to use the @蓝色隐士 bis data (P0 - P2).
 
 If you want to customize BIS info, please go to the `Data/{class_you_want_to_edit}.lua`, and modify the Item register info.
 

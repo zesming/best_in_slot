@@ -197,7 +197,7 @@ local function classItem(class, spec, index)
 
     local classString = item:CreateFontString(nil,"ARTWORK","GameFontHighlight");
     classString:SetPoint("TOPLEFT", 2, 0)
-    classString:SetFont(classString:GetFont(), 15,"THICKOUTLINE");
+    classString:SetFont(classString:GetFont(), 14,"THICKOUTLINE");
     classString:SetText(classIconString .. " " .. class .. " " .. spec)
     classString:SetTextColor(color.r, color.g, color.b)
 

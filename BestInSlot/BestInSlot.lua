@@ -56,8 +56,8 @@ local function onTooltipSetItem(tooltip, itemLink)
 	end
 
 	-- Add Item ID to the last line
-	LibExtraTip:AddLine(tooltip," ",r,g,b,true)
-	LibExtraTip:AddLine(tooltip,"# Item ID: " .. itemID, r,g,b,true)
+	--LibExtraTip:AddLine(tooltip," ",r,g,b,true)
+	--LibExtraTip:AddLine(tooltip,"# Item ID: " .. itemID, r,g,b,true)
 end
 
 -- Init a frame to contains the BIS info
